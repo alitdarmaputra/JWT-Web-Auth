@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const app = express();
 app.set("view engine", "ejs");
@@ -13,9 +14,14 @@ const loginController = require("./controllers/loginController.js");
 const signupController = require("./controllers/signupController.js");
 const storeUserController = require("./controllers/storeUserController.js");
 const loginUserController = require("./controllers/loginUserController.js");
+const dashboardController = require("./controllers/dashboardController.js");
+
 // Middleware
+const authMiddleware = require("./middleware/authMiddleware.js");
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Routes
 app.get("/", homeController);
@@ -23,6 +29,7 @@ app.get("/login", loginController);
 app.post("/users/login", loginUserController);
 app.get("/signup", signupController);
 app.post("/users/signup", storeUserController);
+app.get("/dashboard", authMiddleware, dashboardController);
 
 let port = 4000;
 app.listen(port, () => {

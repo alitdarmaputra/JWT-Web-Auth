@@ -3,7 +3,7 @@ const Users = require("../models/User.js");
 const jwt = require("jsonwebtoken");
 
 function generateAccessToken(username) {
-    return jwt.sign(username, process.env.ACCESS_TOKEN_SECRET);
+    return jwt.sign(username, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3s"});
 }
 
 module.exports = async (req, res) => {
@@ -14,8 +14,8 @@ module.exports = async (req, res) => {
         bcrypt.compare(password, user.password, (err, isSame) => {
             if(isSame) {
                 const accessToken = generateAccessToken({ username: user.username});
-                res.cookie("Authorization", accessToken, httpOnly=true);
-                res.redirect("/");
+                res.cookie("authorization", accessToken, httpOnly=true);
+                res.redirect("/dashboard");
             } else {
                 res.sendStatus(401);
             }
