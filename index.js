@@ -4,19 +4,15 @@ const express = require("express");
 const app = express();
 app.set("view engine", "ejs");
 
-// Route
+// Controllers
+const homeController = require("./controllers/homeController.js");
+const loginController = require("./controllers/loginController.js");
+const signupController = require("./controllers/signupController.js");
 
-app.get("/", (req, res) => {
-    res.render("homepage");
-});
-
-app.get("/login", (req, res) => {
-    res.render("login");
-});
-
-app.get("/signup", (req, res) => {
-    res.render("signup");
-});
+// Routes
+app.get("/", homeController);
+app.get("/login", loginController);
+app.get("/signup", signupController);
 
 let port = 4000;
 app.listen(port, () => {
