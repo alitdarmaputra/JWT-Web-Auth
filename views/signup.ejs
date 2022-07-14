@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('layouts/header') %>
+    <title>Sign up</title>
+</head>
+<body>
+    <%- include('layouts/navbar') %>
+    <h1 class="text-center align-middle mt-5 page-title">Sign Up</h1>
+
+    <form action="/users/signup" method="POST" class="container w-50 mt-5 signup-form">
+        <div class="mb-3">
+            <label for="username-form" class="form-label">Username</label>
+            <input class="form-control" id="username-form" placeholder="your username">
+        </div>
+        <div class="mb-3">
+            <label for="password-form" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password-form" placeholder="your password"></input>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Sign up</button>
+
+        <p class="mt-3">Already have account? <a href="/login">Login</a></p>
+    </form>
+</body>
+</html>
