@@ -28,12 +28,16 @@ module.exports = async (req, res) => {
                 const refreshToken = await generateRefreshToken({ uid: user._id });
                 res.cookie("token", refreshToken, httpOnly=true);
 
-                res.redirect("/dashboard");
+                res.json({ "location": "/dashboard" });
             } else {
-                res.sendStatus(401);
+                res.status(401).send({ 
+                    message: "Invalid username and password"
+                });
             }
         });
     } catch (err) {
-        res.sendStatus(401);
+        res.status(400).send({
+            message: "Invalid username and password"
+        });
     }
 }

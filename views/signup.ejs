@@ -8,7 +8,7 @@
     <%- include('layouts/navbar') %>
     <h1 class="text-center align-middle mt-5 page-title">Sign Up</h1>
 
-<form action="/users/signup" method="POST" class="container w-50 mt-5 signup-form">
+    <form class="container w-50 mt-5 signup-form">
         <div class="mb-3">
             <label for="username-form" class="form-label">Username</label>
             <input class="form-control" id="username-form" name="username" placeholder="your username">
@@ -18,9 +18,42 @@
             <input type="password" class="form-control" name="password" id="password-form" placeholder="your password"></input>
         </div>
 
-        <button class="btn btn-primary" type="submit">Sign up</button>
+        <p class="message-container text-danger"></p>
+
+        <button class="btn btn-primary signup-btn" type="submit">Sign up</button>
 
         <p class="mt-3">Already have account? <a href="/login">Login</a></p>
     </form>
+
+    <script>
+        const form = {
+            username: document.getElementById("username-form"),
+            password: document.getElementById("password-form")
+        }
+
+        const loginBtn = document.querySelector(".signup-btn");
+
+        loginBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            fetch("/users/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: form.username && form.username.value,
+                    password: form.password && form.password.value
+                })
+            }).then(response => {
+                return response.json();
+            }).then(result => {
+                if(result && result.location) window.location.assign(result.location);
+                else {
+                    const messageContainer = document.querySelector(".message-container");
+                    messageContainer.innerHTML = result.message;
+                };
+            }).catch(err => {
+                console.log(err);
+            });
+        });
+    </script>
 </body>
 </html>
