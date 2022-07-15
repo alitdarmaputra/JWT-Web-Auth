@@ -17,7 +17,7 @@ const loginUserController = require("./controllers/loginUserController.js");
 const dashboardController = require("./controllers/dashboardController.js");
 const dashboardMenuController = require("./controllers/dashboardMenuController.js");
 const tokenController = require("./controllers/tokenController.js");
-
+const logoutController = require("./controllers/logoutController.js");
 // Middleware
 const authMiddleware = require("./middleware/authMiddleware.js");
 
@@ -34,6 +34,7 @@ app.post("/users/signup", storeUserController);
 app.get("/users/token", tokenController);
 app.get("/dashboard", authMiddleware, dashboardController);
 app.get("/dashboard/:menu", authMiddleware, dashboardMenuController);
+app.delete("/users/logout", logoutController);
 let port = 4000;
 app.listen(port, () => {
     console.log("App is listening on port", port);

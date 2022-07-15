@@ -10,7 +10,7 @@
             <a class="navbar-brand" href="/">Home</a>
         </div>
         <div class="justify-content-end right-nav">
-            <a href="/users/logout"><button class="btn btn-warning">Log out</button></a>
+            <button class="btn btn-warning logout-btn">Log out</button>
         </div>
     </nav>
     <h1 class="text-center align-middle mt-5 page-title">Dashboard</h1>
@@ -43,7 +43,7 @@
                 }).then(results => {
                     if(!results) return;
 
-                    const contentContainer = document.querySelector(".dashboard-content-container");
+                    const contentContainer = document.querySelector(".dashboard-content-container ul");
                     let content = "";
 
                     results.data.forEach(item => {
@@ -53,6 +53,22 @@
                 });
             });
         });
+
+        const logoutBtn = document.querySelector(".logout-btn");
+        logoutBtn.addEventListener("click", async () => {
+            try {
+                await fetch("/users/logout", {
+                    method: "DELETE"
+                }).then(response => {
+                    console.log(response.status);
+                    if(response.status == 204) {
+                        window.location = "/";
+                    }
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        })
     </script>
 </body>
 </html>
