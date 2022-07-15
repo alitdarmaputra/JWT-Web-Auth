@@ -7,6 +7,7 @@ async function generateRefreshToken(uid) {
     const refreshToken = jwt.sign(uid, process.env.ACCESS_TOKEN_REFRESH, { expiresIn: "5h" });
 
     try {
+        // store to database
         await Token.create({ token: refreshToken });
     } catch (e) {
         console.log(e);

@@ -35,6 +35,8 @@ app.get("/users/token", tokenController);
 app.get("/dashboard", authMiddleware, dashboardController);
 app.get("/dashboard/:menu", authMiddleware, dashboardMenuController);
 app.delete("/users/logout", logoutController);
+app.use((req, res) => res.render("notfound"));
+
 let port = 4000;
 app.listen(port, () => {
     console.log("App is listening on port", port);
