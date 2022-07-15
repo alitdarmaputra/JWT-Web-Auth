@@ -1,9 +1,18 @@
 const bcrypt = require("bcrypt");
 const Users = require("../models/User.js");
 const jwt = require("jsonwebtoken");
+const Token = require("../models/Token");
 
-function generateAccessToken(username) {
-    return jwt.sign(username, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3s"});
+async function generateRefreshToken(uid) {
+    const refreshToken = jwt.sign(uid, process.env.ACCESS_TOKEN_REFRESH, { expiresIn: "5h" });
+
+    try {
+        await Token.create({ token: refreshToken });
+    } catch (e) {
+        console.log(e);
+    }
+
+    return refreshToken;
 }
 
 module.exports = async (req, res) => {
@@ -11,10 +20,14 @@ module.exports = async (req, res) => {
 
     try {
         const user = await Users.findOne({ username: username });
-        bcrypt.compare(password, user.password, (err, isSame) => {
+        bcrypt.compare(password, user.password, async (err, isSame) => {
             if(isSame) {
-                const accessToken = generateAccessToken({ username: user.username});
-                res.cookie("authorization", accessToken, httpOnly=true);
+                const accessToken = jwt.sign({uid: user._id}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10s"});
+                res.cookie("authorization", `Bearer ${accessToken}`, httpOnly=true);
+
+                const refreshToken = await generateRefreshToken({ uid: user._id });
+                res.cookie("token", refreshToken, httpOnly=true);
+
                 res.redirect("/dashboard");
             } else {
                 res.sendStatus(401);

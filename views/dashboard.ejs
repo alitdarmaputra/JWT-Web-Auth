@@ -14,5 +14,45 @@
         </div>
     </nav>
     <h1 class="text-center align-middle mt-5 page-title">Dashboard</h1>
+    <div class="menu-container mt-3 container d-flex justify-content-center gap-3">
+        <button>Buah</button>
+        <button>Sayur</button>
+        <button>Hewan</button>
+    </div>
+
+    <div class="container align-middle mt-3 dashboard-content-container">
+        <ul></ul>
+    </div>
+    <script>
+        const dashboardMenu = document.querySelectorAll(".menu-container button");
+
+        dashboardMenu.forEach((e, i) => {
+            e.addEventListener("click", async () => {
+                await fetch(`/dashboard/${i}`).then(async response => {
+                    if(response.status == 403) {
+                        // Fetch new access token
+                        const newToken = await fetch("/users/token").then(response => response.json());
+                        console.log("new access token:", newToken);
+
+                        // Refetch data
+                        return await fetch(`/dashboard/${i}`)
+                        .then(response => response.json());
+                    } else {
+                        return response.json();
+                    };
+                }).then(results => {
+                    if(!results) return;
+
+                    const contentContainer = document.querySelector(".dashboard-content-container");
+                    let content = "";
+
+                    results.data.forEach(item => {
+                        content+=`<li>${item}</li>`;
+                    });
+                    contentContainer.innerHTML = content;
+                });
+            });
+        });
+    </script>
 </body>
 </html>
