@@ -12,7 +12,7 @@ MongooDB, Express.js, Bootstrap, Node.js,
 
 ## Design Patern
 
-Model-View-Controller (MVC) design pattern. This pattern has clearly seperated application's concerns and and provide convenience in debugging.
+Model-View-Controller (MVC) design pattern. This pattern has clearly seperated application's concerns and provide convenience in debugging.
 
 ## Getting Started
 
