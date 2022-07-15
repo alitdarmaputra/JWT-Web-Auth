@@ -18,7 +18,6 @@ async function generateRefreshToken(uid) {
 
 module.exports = async (req, res) => {
     const {username, password} = req.body;
-
     try {
         const user = await Users.findOne({ username: username });
         bcrypt.compare(password, user.password, async (err, isSame) => {
