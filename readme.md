@@ -16,7 +16,7 @@ Model-View-Controller (MVC) design pattern. This pattern has clearly seperated a
 
 ## Getting Started
 
-### Dependencies
+### Requirements
 
 * Node.js
 * MongooDB Server
