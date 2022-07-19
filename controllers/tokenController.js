@@ -3,12 +3,9 @@ const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res) => {
     const refreshToken = req.cookies && req.cookies.token;
-    if(refreshToken == null) return res.sendStatus(401);
 
     try {
         const token = await Token.findOne({ token: refreshToken }).then(results => results && results.token);
-
-        if(!token) throw new Error("Document not found");
 
         jwt.verify(refreshToken, process.env.ACCESS_TOKEN_REFRESH, (err, decoded) => {
             if(err) return res.sendStatus(403);
@@ -20,7 +17,7 @@ module.exports = async (req, res) => {
             }
         });
     } catch(err) {
-        res.sendStatus(401);
         console.log(err);
+        res.status(500).json({ error: err });
     }
 }

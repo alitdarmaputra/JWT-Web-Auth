@@ -18,6 +18,7 @@ async function generateRefreshToken(uid) {
 
 module.exports = async (req, res) => {
     const {username, password} = req.body;
+
     try {
         const user = await Users.findOne({ username: username });
         bcrypt.compare(password, user.password, async (err, isSame) => {
@@ -36,8 +37,9 @@ module.exports = async (req, res) => {
             }
         });
     } catch (err) {
-        res.status(400).send({
-            message: "Invalid username and password"
+        console.log(err);
+        res.status(500).json({
+            error: err
         });
     }
 }

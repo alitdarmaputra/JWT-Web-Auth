@@ -30,7 +30,7 @@ describe('Display All Page Test', () => {
   it('should prevent access dashboard if not login', async () => {
     const res = await request(app)
       .get('/dashboard');
-    expect(res.statusCode).toEqual(401);
+    expect(res.statusCode).toEqual(403);
   });
 })
 
@@ -43,8 +43,8 @@ describe('Signup Test', () => {
         "username": null,
         "password": null
       });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toHaveProperty("message");
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toHaveProperty("error");
   });
 
   it('only fill username form', async () => {
@@ -54,8 +54,8 @@ describe('Signup Test', () => {
         "username": "test_user",
         "password": null
       });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toHaveProperty("message");
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toHaveProperty("error");
   });
 
   it('fill username and password form', async () => {
@@ -76,8 +76,8 @@ describe('Signup Test', () => {
         "username": "test_username",
         "password": "test_password"
       });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toHaveProperty("message");
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toHaveProperty("error");
   });
 });
 
@@ -90,8 +90,8 @@ describe('Login Test', () => {
         "username": null,
         "password": null
       });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toHaveProperty("message");
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toHaveProperty("error");
   });
   
   it('fill right username and wrong password form', async () => {
@@ -112,8 +112,8 @@ describe('Login Test', () => {
         "username": "asdf",
         "password": "test_password"
       });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toHaveProperty("message");
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toHaveProperty("error");
   });
 
   it('fill wrong username and wrong password form', async () => {
@@ -123,8 +123,8 @@ describe('Login Test', () => {
         "username": "asdf",
         "password": "asdf"
       });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toHaveProperty("message");
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toHaveProperty("error");
   });
 
   it('fill right username and right password form', async () => {

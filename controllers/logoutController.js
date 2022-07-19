@@ -5,6 +5,8 @@ module.exports = async (req, res) => {
         await Token.findOneAndDelete({ token: req.cookies.token });
         res.sendStatus(204);
     } catch (e) {
-        res.sendStatus(403);
+        res.status(500).json({
+            error: e
+        });
     }
 }
